@@ -114,7 +114,12 @@ const App = () => {
           </FormGrid>
         )}
       </Formik>
-      <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Stage
+        style={{ marginLeft: '-100px' }}
+        width={1000}
+        height={1000}
+        
+      >
         <Layer>
           {state.data.map(item => (
             <Rect
