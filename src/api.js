@@ -1,9 +1,16 @@
 import { generate } from './utils';
 
 export const getData = async () => {
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  return generate({
-    columns: 8,
-    rows: 2
-  });
+  return new Promise(resolve =>
+    setTimeout(
+      () =>
+        resolve(
+          generate({
+            columns: 8,
+            rows: 2
+          })
+        ),
+      1000
+    )
+  );
 };
