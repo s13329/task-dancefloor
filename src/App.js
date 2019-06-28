@@ -25,6 +25,11 @@ const Button = styled('button')({
   backgroundColor: 'white'
 });
 
+const Loading = styled('h1')({
+  display: 'flex',
+  alignItems: 'center'
+});
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_SUCCESS':
@@ -78,7 +83,7 @@ const App = () => {
   }, []);
 
   if (state.isLoading) {
-    return <div>...Loading</div>;
+    return <Loading>Loading...</Loading>;
   }
 
   return (
@@ -94,11 +99,17 @@ const App = () => {
         {() => (
           <FormGrid>
             <Field
+              style={{ textAlign: 'center' }}
               type="text"
               name="columns"
               placeholder="Set column quantity"
             />
-            <Field type="text" name="rows" placeholder="Set row quantity" />
+            <Field
+              style={{ textAlign: 'center' }}
+              type="text"
+              name="rows"
+              placeholder="Set row quantity"
+            />
             <Button type="submit">Generate</Button>
           </FormGrid>
         )}
