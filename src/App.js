@@ -87,10 +87,4 @@ const App = () => {
   );
 };
 
-/*  {[...Array(state.rows)].map((row, i) =>
-            [...Array(state.columns)].map((column, j) => (
-              <Rect x={20 * (j + 1)} y={20 * (i + 1)} width={50} height={50} />
-            ))
-          )} */
-
 export default App;
