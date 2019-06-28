@@ -1,7 +1,7 @@
 export const getData = async () => {
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  await new Promise(resolve => setTimeout(resolve, 0));
   return {
-    rows: 2,
-    columns: 10
+    columns: 4,
+    rows: 2
   };
 };
