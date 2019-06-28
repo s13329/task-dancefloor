@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useCallback } from 'react';
 import styled from 'styled-jss';
 import { Formik, Form, Field } from 'formik';
 import { Stage, Layer, Rect } from 'react-konva';
@@ -63,19 +63,19 @@ const App = () => {
     fetchData();
   }, []);
 
-  const handleSubmit = values => {
+  const handleSubmit = useCallback(values => {
     dispatch({
       type: 'FETCH_SUCCESS',
       payload: generate(values)
     });
-  };
+  }, []);
 
-  const handleMouseEnter = id => {
+  const handleMouseEnter = useCallback(id => {
     dispatch({
       type: 'RECT_TOGGLE',
       payload: id
     });
-  };
+  }, []);
 
   if (state.isLoading) {
     return <div>...Loading</div>;
