@@ -3,6 +3,7 @@ import styled from 'styled-jss';
 import { Formik, Form, Field } from 'formik';
 import { Stage, Layer, Rect } from 'react-konva';
 import Konva from 'konva';
+import { generate } from './utils';
 
 import { getData } from './api';
 
@@ -27,7 +28,19 @@ const Button = styled('button')({
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_SUCCESS':
-      return { ...state, ...action.payload, isLoading: false };
+      return { ...state, isLoading: false, data: action.payload };
+    case 'RECT_TOGGLE':
+      return {
+        ...state,
+        data: state.data.map(item =>
+          item.id === action.payload
+            ? {
+                ...item,
+                color: Konva.Util.getRandomColor()
+              }
+            : item
+        )
+      };
     default:
       return state;
   }
@@ -35,8 +48,7 @@ const reducer = (state, action) => {
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, {
-    columns: '',
-    rows: '',
+    data: [],
     isLoading: true
   });
 
@@ -54,11 +66,16 @@ const App = () => {
   const handleSubmit = values => {
     dispatch({
       type: 'FETCH_SUCCESS',
-      payload: values
+      payload: generate(values)
     });
   };
 
-  console.log('state :', state);
+  const handleMouseEnter = id => {
+    dispatch({
+      type: 'RECT_TOGGLE',
+      payload: id
+    });
+  };
 
   if (state.isLoading) {
     return <div>...Loading</div>;
@@ -70,8 +87,8 @@ const App = () => {
         onSubmit={handleSubmit}
         enableReinitialize
         initialValues={{
-          rows: state.rows,
-          columns: state.columns
+          rows: '',
+          columns: ''
         }}
       >
         {() => (
@@ -88,17 +105,17 @@ const App = () => {
       </Formik>
       <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer>
-          {[...Array(+state.rows)].map((row, i) =>
-            [...Array(+state.columns)].map((column, j) => (
-              <Rect
-                x={100 * j}
-                y={100 * i}
-                width={100}
-                height={100}
-                fill={Konva.Util.getRandomColor()}
-              />
-            ))
-          )}
+          {state.data.map(item => (
+            <Rect
+              key={item.id}
+              x={100 * item.column}
+              y={100 * item.row}
+              width={100}
+              height={100}
+              fill={item.color}
+              onMouseEnter={() => handleMouseEnter(item.id)}
+            />
+          ))}
         </Layer>
       </Stage>
     </Container>

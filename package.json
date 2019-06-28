@@ -9,7 +9,8 @@
     "react-dom": "^16.8.6",
     "react-konva": "^16.8.7-3",
     "react-scripts": "3.0.1",
-    "styled-jss": "^2.2.3"
+    "styled-jss": "^2.2.3",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
