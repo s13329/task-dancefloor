@@ -1,26 +1,73 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer, useEffect } from 'react';
+import styled from 'styled-jss';
+import { Formik, Form, Field } from 'formik';
 
-function App() {
+import { getData } from './api';
+
+const Container = styled('div')({
+  width: '800px'
+});
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_SUCCESS':
+      return { ...state, ...action.payload, isLoading: false };
+    default:
+      return state;
+  }
+};
+
+const App = () => {
+  const [state, dispatch] = useReducer(reducer, {
+    columns: '',
+    rows: '',
+    isLoading: true
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getData();
+      dispatch({
+        type: 'FETCH_SUCCESS',
+        payload: result
+      });
+    };
+    fetchData();
+  }, []);
+
+  const handleSubmit = values => {
+    dispatch({
+      type: 'FETCH_SUCCESS',
+      payload: values
+    });
+  };
+
+  console.log('state :', state);
+
+  if (state.isLoading) {
+    return <div>...Loading</div>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Formik
+        onSubmit={handleSubmit}
+        enableReinitialize
+        initialValues={{
+          rows: state.rows,
+          columns: state.columns
+        }}
+      >
+        {() => (
+          <Form>
+            <Field type="text" name="columns" />
+            <Field type="text" name="rows" />
+            <button type="submit">Generate</button>
+          </Form>
+        )}
+      </Formik>
+    </Container>
   );
-}
+};
 
 export default App;
