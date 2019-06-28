@@ -7,7 +7,21 @@ import Konva from 'konva';
 import { getData } from './api';
 
 const Container = styled('div')({
-  width: '800px'
+  width: '800px',
+  padding: '50px'
+});
+
+const FormGrid = styled(Form)({
+  display: 'grid',
+  gridTemplateRows: '1fr',
+  gridTemplateColumns: '2fr 2fr 1fr',
+  gridColumnGap: '20px',
+  height: '50px',
+  marginBottom: '50px'
+});
+
+const Button = styled('button')({
+  backgroundColor: 'white'
 });
 
 const reducer = (state, action) => {
@@ -61,11 +75,15 @@ const App = () => {
         }}
       >
         {() => (
-          <Form>
-            <Field type="text" name="columns" />
-            <Field type="text" name="rows" />
-            <button type="submit">Generate</button>
-          </Form>
+          <FormGrid>
+            <Field
+              type="text"
+              name="columns"
+              placeholder="Set column quantity"
+            />
+            <Field type="text" name="rows" placeholder="Set row quantity" />
+            <Button type="submit">Generate</Button>
+          </FormGrid>
         )}
       </Formik>
       <Stage width={window.innerWidth} height={window.innerHeight}>
